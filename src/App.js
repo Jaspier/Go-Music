@@ -1,5 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Music from './components/Music';
+import Home from './components/Home';
+import Admin from './components/Admin';
 
 export default function App() {
   return (
@@ -20,7 +23,7 @@ export default function App() {
                   <Link to='/music'>Music</Link>
                 </li>
                 <li className='list-group-item'>
-                  <Link to='/admin'>Manage Songs</Link>
+                  <Link to='/admin'>Manage Collection</Link>
                 </li>
               </ul>
             </nav>
@@ -42,16 +45,4 @@ export default function App() {
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function Music() {
-  return <h2>Music</h2>;
-}
-
-function Admin() {
-  return <h2>Manage Songs</h2>;
 }
