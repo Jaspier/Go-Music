@@ -1,44 +1,92 @@
 import React, { Component, Fragment } from 'react';
 
 export default class OneSong extends Component {
-  state = { song: {} };
+  state = { song: {}, isLoaded: false, error: null };
 
   componentDidMount() {
-    this.setState({
-      song: {
-        id: this.props.match.params.id,
-        title: 'Example Song',
-        duration: 180,
-      },
-    });
+    fetch('http://localhost:4000/v1/song/' + this.props.match.params.id)
+      .then(response => {
+        if (response.status !== '200') {
+          let err = Error;
+          err.message = 'Invalid response code: ' + response.status;
+          this.setState({ error: err });
+        }
+        return response.json();
+      })
+      .then(json => {
+        this.setState(
+          {
+            song: json.song,
+            isLoaded: true,
+          },
+          error => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+      });
   }
 
   render() {
-    return (
-      <Fragment>
-        <h2>
-          Song: {this.state.song.title} {this.state.song.id}
-        </h2>
+    const { song, isLoaded, error } = this.state;
+    if (song.genres) {
+      song.genres = Object.values(song.genres);
+    } else {
+      song.genres = [];
+    }
 
-        <table className='table table-compact table-striped'>
-          <thead>
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <p>Loading...</p>;
+    } else {
+      return (
+        <Fragment>
+          <h2>
+            Song: {song.title} ({song.year})
+          </h2>
+
+          <div className='float-start'>
+            <small>Rating: {song.riaa_rating}</small>
+          </div>
+          <div className='float-end'>
+            {song.genres.map((m, index) => (
+              <span className='badge bg-secondary me-1' key={index}>
+                {m}
+              </span>
+            ))}
+          </div>
+          <div className='clearfix'></div>
+
+          <hr />
+
+          <table className='table table-compact table-striped'>
+            <thead></thead>
             <tbody>
               <tr>
                 <td>
                   <strong>Title:</strong>
                 </td>
-                <td>{this.state.song.title}</td>
+                <td>{song.title}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Description:</strong>
+                </td>
+                <td>{song.description}</td>
               </tr>
               <tr>
                 <td>
                   <strong>Duration:</strong>
                 </td>
-                <td>{this.state.song.duration} seconds</td>
+                <td>{song.runtime} seconds</td>
               </tr>
             </tbody>
-          </thead>
-        </table>
-      </Fragment>
-    );
+          </table>
+        </Fragment>
+      );
+    }
   }
 }
