@@ -45,13 +45,17 @@ export default class Music extends Component {
         <Fragment>
           <h2>Choose Song</h2>
 
-          <ul>
+          <div className='list-group'>
             {songs.map(m => (
-              <li key={m.id}>
-                <Link to={`/songs/${m.id}`}>{m.title}</Link>
-              </li>
+              <Link
+                key={m.id}
+                className='list-group-item list-group-item-action'
+                to={`/songs/${m.id}`}
+              >
+                {m.title} - {m.artist}
+              </Link>
             ))}
-          </ul>
+          </div>
         </Fragment>
       );
     }

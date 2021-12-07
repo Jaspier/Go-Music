@@ -73,15 +73,15 @@ export default class OneSong extends Component {
               </tr>
               <tr>
                 <td>
-                  <strong>Description:</strong>
+                  <strong>Artist:</strong>
                 </td>
-                <td>{song.description}</td>
+                <td>{song.artist}</td>
               </tr>
               <tr>
                 <td>
                   <strong>Duration:</strong>
                 </td>
-                <td>{song.runtime} seconds</td>
+                <td>{song.duration} seconds</td>
               </tr>
             </tbody>
           </table>
