@@ -6,6 +6,7 @@ export default class OneGenre extends Component {
     songs: [],
     isLoaded: false,
     error: null,
+    genreName: '',
   };
 
   componentDidMount() {
@@ -23,6 +24,7 @@ export default class OneGenre extends Component {
           {
             songs: json.songs,
             isLoaded: true,
+            genreName: this.props.location.genreName,
           },
           error => {
             this.setState({
@@ -35,7 +37,7 @@ export default class OneGenre extends Component {
   }
 
   render() {
-    let { songs, isLoaded, error } = this.state;
+    let { songs, isLoaded, error, genreName } = this.state;
     if (!songs) {
       songs = [];
     }
@@ -43,10 +45,19 @@ export default class OneGenre extends Component {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
       return <p>Loading...</p>;
+    } else if (songs.length === 0) {
+      return (
+        <Fragment>
+          <h2>Genre: {genreName}</h2>
+          <p>
+            You don't have any <strong>{genreName}</strong> songs yet.
+          </p>
+        </Fragment>
+      );
     } else {
       return (
         <Fragment>
-          <h2>Genre: </h2>
+          <h2>Genre: {genreName}</h2>
 
           <div className='list-group'>
             {songs.map(m => (
