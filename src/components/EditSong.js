@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import './EditSong.css';
 import Input from './form-components/input';
 import Select from './form-components/select.js';
 import Alert from './ui-components/Alert';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default class EditSong extends Component {
   constructor(props) {
@@ -137,6 +140,43 @@ export default class EditSong extends Component {
     }
   }
 
+  confirmDelete = e => {
+    confirmAlert({
+      title: 'Delete Song?',
+      message: 'Are you sure?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            fetch(
+              'http://localhost:4000/v1/admin/deletesong/' + this.state.song.id,
+              { method: 'GET' }
+            )
+              .then(response => response.json)
+              .then(data => {
+                if (data.error) {
+                  this.setState({
+                    alert: {
+                      type: 'alert-danger',
+                      message: data.error.message,
+                    },
+                  });
+                } else {
+                  this.props.history.push({
+                    pathname: '/admin',
+                  });
+                }
+              });
+          },
+        },
+        {
+          label: 'No',
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
   render() {
     let { song, isLoaded, error } = this.state;
 
@@ -220,6 +260,18 @@ export default class EditSong extends Component {
             <hr />
 
             <button className='btn btn-primary'>Save</button>
+            <Link to='/admin' className='btn btn-warning ms-1'>
+              Cancel
+            </Link>
+            {song.id > 0 && (
+              <a
+                href='#!'
+                onClick={() => this.confirmDelete()}
+                className='btn btn-danger ms-1'
+              >
+                Delete
+              </a>
+            )}
           </form>
         </Fragment>
       );
