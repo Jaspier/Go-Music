@@ -25,6 +25,7 @@ export default class EditSong extends Component {
       ],
       isLoaded: false,
       error: null,
+      errors: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -32,8 +33,37 @@ export default class EditSong extends Component {
   }
 
   handleSubmit = evt => {
-    console.log('Form was submitted');
     evt.preventDefault();
+
+    // client side validation
+    let errors = [];
+    if (this.state.song.title === '') {
+      errors.push('title');
+    }
+    if (this.state.song.artist === '') {
+      errors.push('artist');
+    }
+
+    this.setState({ errors: errors });
+
+    if (errors.length > 0) {
+      return false;
+    }
+
+    const data = new FormData(evt.target);
+    const payload = Object.fromEntries(data.entries());
+    console.log(payload);
+
+    const requestOptions = {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    };
+
+    fetch('http://localhost:4000/v1/admin/editsong', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      });
   };
 
   handleChange = evt => {
@@ -46,6 +76,10 @@ export default class EditSong extends Component {
       },
     }));
   };
+
+  hasError(key) {
+    return this.state.errors.indexOf(key) !== -1;
+  }
 
   componentDidMount() {
     const id = this.props.match.params.id;
@@ -113,10 +147,13 @@ export default class EditSong extends Component {
 
             <Input
               title={'Title'}
+              className={this.hasError('title') ? 'is-invalid' : ''}
               type={'text'}
               name={'title'}
               value={song.title}
               handleChange={this.handleChange}
+              errorDiv={this.hasError('title') ? 'text-danger' : 'd-none'}
+              errorMsg={'Please enter a title'}
             />
 
             <Input
@@ -154,10 +191,13 @@ export default class EditSong extends Component {
 
             <Input
               title={'Artist'}
+              className={this.hasError('artist') ? 'is-invalid' : ''}
               type={'text'}
               name={'artist'}
               value={song.artist}
               handleChange={this.handleChange}
+              errorDiv={this.hasError('artist') ? 'text-danger' : 'd-none'}
+              errorMsg={'Please enter the song artist'}
             />
 
             <hr />
