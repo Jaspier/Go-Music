@@ -97,7 +97,12 @@ export default class App extends Component {
                   <Genres />
                 </Route>
 
-                <Route path='/admin/song/:id' component={EditSong} />
+                <Route
+                  path='/admin/song/:id'
+                  component={props => (
+                    <EditSong {...props} jwt={this.state.jwt} />
+                  )}
+                />
 
                 <Route path='/admin'>
                   <Admin />

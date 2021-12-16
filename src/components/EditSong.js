@@ -60,11 +60,14 @@ export default class EditSong extends Component {
 
     const data = new FormData(evt.target);
     const payload = Object.fromEntries(data.entries());
-    console.log(payload);
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', 'Bearer ' + this.props.jwt);
 
     const requestOptions = {
       method: 'POST',
       body: JSON.stringify(payload),
+      headers: myHeaders,
     };
 
     fetch('http://localhost:4000/v1/admin/editsong', requestOptions)
@@ -98,6 +101,13 @@ export default class EditSong extends Component {
   }
 
   componentDidMount() {
+    if (this.props.jwt === '') {
+      this.props.history.push({
+        pathname: '/login',
+      });
+      return;
+    }
+    console.log('JWT in EditSong componentDidMount', this.props.jwt);
     const id = this.props.match.params.id;
     if (id > 0) {
       fetch('http://localhost:4000/v1/song/' + id)
