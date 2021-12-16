@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Songs from './components/Songs';
 import Home from './components/Home';
@@ -7,63 +7,109 @@ import OneSong from './components/OneSong';
 import Genres from './components/Genres';
 import OneGenre from './components/OneGenre';
 import EditSong from './components/EditSong';
+import { Component } from 'react/cjs/react.development';
+import Login from './components/Login';
 
-export default function App() {
-  return (
-    <Router>
-      <div className='container'>
-        <div className='row'>
-          <h1 className='mt-3'>Go Music!</h1>
-          <hr className='mb-3' />
-        </div>
-        <div className='row'>
-          <div className='col-md-2'>
-            <nav>
-              <ul className='list-group'>
-                <li className='list-group-item'>
-                  <Link to='/'>Home</Link>
-                </li>
-                <li className='list-group-item'>
-                  <Link to='/songs'>Songs</Link>
-                </li>
-                <li className='list-group-item'>
-                  <Link to='/genres'>Genres</Link>
-                </li>
-                <li className='list-group-item'>
-                  <Link to='/admin/song/0'>Add Song</Link>
-                </li>
-                <li className='list-group-item'>
-                  <Link to='/admin'>Manage Collection</Link>
-                </li>
-              </ul>
-            </nav>
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      jwt: '',
+    };
+    this.handleJWTChange(this.handleJWTChange.bind(this));
+  }
+
+  handleJWTChange = jwt => {
+    this.setState({ jwt: jwt });
+  };
+
+  logout = () => {
+    this.setState({ jwt: '' });
+  };
+
+  render() {
+    let loginLink;
+    if (this.state.jwt === '') {
+      loginLink = <Link to='/login'>Login</Link>;
+    } else {
+      loginLink = (
+        <Link to='/logout' onClick={this.logout}>
+          Logout
+        </Link>
+      );
+    }
+    return (
+      <Router>
+        <div className='container'>
+          <div className='row'>
+            <div className='col mt-3'>
+              <h1 className='mt-3'>Go Music!</h1>
+            </div>
+            <div className='col mt-3 text-end'>{loginLink}</div>
+            <hr className='mb-3' />
           </div>
-          <div className='col-md-10'>
-            <Switch>
-              <Route path='/songs/:id' component={OneSong} />
+          <div className='row'>
+            <div className='col-md-2'>
+              <nav>
+                <ul className='list-group'>
+                  <li className='list-group-item'>
+                    <Link to='/'>Home</Link>
+                  </li>
+                  <li className='list-group-item'>
+                    <Link to='/songs'>Songs</Link>
+                  </li>
+                  <li className='list-group-item'>
+                    <Link to='/genres'>Genres</Link>
+                  </li>
+                  {this.state.jwt !== '' && (
+                    <Fragment>
+                      <li className='list-group-item'>
+                        <Link to='/admin/song/0'>Add Song</Link>
+                      </li>
+                      <li className='list-group-item'>
+                        <Link to='/admin'>Manage Collection</Link>
+                      </li>
+                    </Fragment>
+                  )}
+                </ul>
+                <pre>{JSON.stringify(this.state, null, 3)}</pre>
+              </nav>
+            </div>
+            <div className='col-md-10'>
+              <Switch>
+                <Route path='/songs/:id' component={OneSong} />
 
-              <Route path='/songs'>
-                <Songs />
-              </Route>
+                <Route path='/songs'>
+                  <Songs />
+                </Route>
 
-              <Route path='/genre/:id' component={OneGenre} />
+                <Route path='/genre/:id' component={OneGenre} />
 
-              <Route exact path='/genres'>
-                <Genres />
-              </Route>
+                <Route
+                  exact
+                  path='/login'
+                  component={props => (
+                    <Login {...props} handleJWTChange={this.handleJWTChange} />
+                  )}
+                />
 
-              <Route path='/admin/song/:id' component={EditSong} />
+                <Route exact path='/genres'>
+                  <Genres />
+                </Route>
 
-              <Route path='/admin'>
-                <Admin />
-              </Route>
-              <Route path='/'>
-                <Home />
-              </Route>
-            </Switch>
+                <Route path='/admin/song/:id' component={EditSong} />
+
+                <Route path='/admin'>
+                  <Admin />
+                </Route>
+                <Route path='/'>
+                  <Home />
+                </Route>
+              </Switch>
+            </div>
           </div>
         </div>
-      </div>
-    </Router>
-  );
+      </Router>
+    );
+  }
 }
