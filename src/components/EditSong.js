@@ -107,7 +107,6 @@ export default class EditSong extends Component {
       });
       return;
     }
-    console.log('JWT in EditSong componentDidMount', this.props.jwt);
     const id = this.props.match.params.id;
     if (id > 0) {
       fetch('http://localhost:4000/v1/song/' + id)
@@ -158,6 +157,11 @@ export default class EditSong extends Component {
         {
           label: 'Yes',
           onClick: () => {
+            // delete the song
+            const myHeaders = new Headers();
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('Authorization', 'Bearer ' + this.props.jwt);
+
             fetch(
               'http://localhost:4000/v1/admin/deletesong/' + this.state.song.id,
               { method: 'GET' }
