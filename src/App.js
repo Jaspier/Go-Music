@@ -10,6 +10,7 @@ import EditSong from './components/EditSong';
 import { Component } from 'react/cjs/react.development';
 import Login from './components/Login';
 import GraphQL from './components/GraphQL';
+import OneSongGraphQL from './components/OneSongGraphQL';
 
 export default class App extends Component {
   constructor(props) {
@@ -91,6 +92,7 @@ export default class App extends Component {
             <div className="col-md-10">
               <Switch>
                 <Route path="/songs/:id" component={OneSong} />
+                <Route path="/songsgraphql/:id" component={OneSongGraphQL} />
 
                 <Route path="/songs">
                   <Songs />
