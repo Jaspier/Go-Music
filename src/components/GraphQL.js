@@ -25,7 +25,11 @@ export default class GraphQL extends Component {
       searchTerm: value,
     }));
 
-    this.performSearch();
+    if (value.length > 2) {
+      this.performSearch();
+    } else {
+      this.setState({ songs: [] });
+    }
   };
 
   performSearch() {
@@ -57,7 +61,6 @@ export default class GraphQL extends Component {
         return theList;
       })
       .then(theList => {
-        console.log(theList);
         if (theList.length > 0) {
           this.setState({
             songs: theList,
@@ -99,7 +102,6 @@ export default class GraphQL extends Component {
         return theList;
       })
       .then(theList => {
-        console.log(theList);
         this.setState({
           songs: theList,
         });
