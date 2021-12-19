@@ -19,6 +19,7 @@ export default class EditSong extends Component {
         riaa_rating: '',
         rating: '',
         artist: '',
+        cover: '',
       },
       riaaOptions: [
         { id: 'G', value: 'G' },
@@ -131,6 +132,7 @@ export default class EditSong extends Component {
                 riaa_rating: json.song.riaa_rating,
                 rating: json.song.rating,
                 artist: json.song.artist,
+                cover: json.song.cover,
               },
               isLoaded: true,
             },
@@ -209,9 +211,9 @@ export default class EditSong extends Component {
           <hr />
           <form onSubmit={this.handleSubmit}>
             <input
-              type='hidden'
-              name='id'
-              id='id'
+              type="hidden"
+              name="id"
+              id="id"
               value={song.id}
               onChange={this.handleChange}
             />
@@ -271,17 +273,25 @@ export default class EditSong extends Component {
               errorMsg={'Please enter the song artist'}
             />
 
+            <Input
+              title={'Cover URL'}
+              type={'text'}
+              name={'cover'}
+              value={song.cover}
+              handleChange={this.handleChange}
+            />
+
             <hr />
 
-            <button className='btn btn-primary'>Save</button>
-            <Link to='/admin' className='btn btn-warning ms-1'>
+            <button className="btn btn-primary">Save</button>
+            <Link to="/admin" className="btn btn-warning ms-1">
               Cancel
             </Link>
             {song.id > 0 && (
               <a
-                href='#!'
+                href="#!"
                 onClick={() => this.confirmDelete()}
-                className='btn btn-danger ms-1'
+                className="btn btn-danger ms-1"
               >
                 Delete
               </a>

@@ -36,7 +36,6 @@ export default class OneSong extends Component {
     } else {
       song.genres = [];
     }
-
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -48,21 +47,31 @@ export default class OneSong extends Component {
             Song: {song.title} ({song.year})
           </h2>
 
-          <div className='float-start'>
+          {song.cover !== '' && (
+            <div>
+              <img
+                src={song.cover}
+                alt="album cover"
+                style={{ width: '300px' }}
+              />
+            </div>
+          )}
+
+          <div className="float-start">
             <small>Rating: {song.riaa_rating}</small>
           </div>
-          <div className='float-end'>
+          <div className="float-end">
             {song.genres.map((m, index) => (
-              <span className='badge bg-secondary me-1' key={index}>
+              <span className="badge bg-secondary me-1" key={index}>
                 {m}
               </span>
             ))}
           </div>
-          <div className='clearfix'></div>
+          <div className="clearfix"></div>
 
           <hr />
 
-          <table className='table table-compact table-striped'>
+          <table className="table table-compact table-striped">
             <thead></thead>
             <tbody>
               <tr>

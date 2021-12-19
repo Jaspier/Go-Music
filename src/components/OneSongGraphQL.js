@@ -15,6 +15,7 @@ export default class OneSongGraphQL extends Component {
         release_date
         rating
         riaa_rating
+        cover
       }
     }
     `;
@@ -56,6 +57,16 @@ export default class OneSongGraphQL extends Component {
           <h2>
             Song: {song.title} ({song.year})
           </h2>
+
+          {song.cover !== '' && (
+            <div>
+              <img
+                src={song.cover}
+                alt="album cover"
+                style={{ width: '300px' }}
+              />
+            </div>
+          )}
 
           <div className="float-start">
             <small>Rating: {song.riaa_rating}</small>
