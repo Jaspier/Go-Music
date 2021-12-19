@@ -9,6 +9,7 @@ import OneGenre from './components/OneGenre';
 import EditSong from './components/EditSong';
 import { Component } from 'react/cjs/react.development';
 import Login from './components/Login';
+import GraphQL from './components/GraphQL';
 
 export default class App extends Component {
   constructor(props) {
@@ -40,85 +41,91 @@ export default class App extends Component {
   render() {
     let loginLink;
     if (this.state.jwt === '') {
-      loginLink = <Link to='/login'>Login</Link>;
+      loginLink = <Link to="/login">Login</Link>;
     } else {
       loginLink = (
-        <Link to='/logout' onClick={this.logout}>
+        <Link to="/logout" onClick={this.logout}>
           Logout
         </Link>
       );
     }
     return (
       <Router>
-        <div className='container'>
-          <div className='row'>
-            <div className='col mt-3'>
-              <h1 className='mt-3'>Go Music!</h1>
+        <div className="container">
+          <div className="row">
+            <div className="col mt-3">
+              <h1 className="mt-3">Go Music!</h1>
             </div>
-            <div className='col mt-3 text-end'>{loginLink}</div>
-            <hr className='mb-3' />
+            <div className="col mt-3 text-end">{loginLink}</div>
+            <hr className="mb-3" />
           </div>
-          <div className='row'>
-            <div className='col-md-2'>
+          <div className="row">
+            <div className="col-md-2">
               <nav>
-                <ul className='list-group'>
-                  <li className='list-group-item'>
-                    <Link to='/'>Home</Link>
+                <ul className="list-group">
+                  <li className="list-group-item">
+                    <Link to="/">Home</Link>
                   </li>
-                  <li className='list-group-item'>
-                    <Link to='/songs'>Songs</Link>
+                  <li className="list-group-item">
+                    <Link to="/songs">Songs</Link>
                   </li>
-                  <li className='list-group-item'>
-                    <Link to='/genres'>Genres</Link>
+                  <li className="list-group-item">
+                    <Link to="/genres">Genres</Link>
                   </li>
                   {this.state.jwt !== '' && (
                     <Fragment>
-                      <li className='list-group-item'>
-                        <Link to='/admin/song/0'>Add Song</Link>
+                      <li className="list-group-item">
+                        <Link to="/admin/song/0">Add Song</Link>
                       </li>
-                      <li className='list-group-item'>
-                        <Link to='/admin'>Manage Collection</Link>
+                      <li className="list-group-item">
+                        <Link to="/admin">Manage Collection</Link>
                       </li>
                     </Fragment>
                   )}
+                  <li className="list-group-item">
+                    <Link to="/graphql">GraphQL</Link>
+                  </li>
                 </ul>
-                <pre>{JSON.stringify(this.state, null, 3)}</pre>
               </nav>
             </div>
-            <div className='col-md-10'>
+            <div className="col-md-10">
               <Switch>
-                <Route path='/songs/:id' component={OneSong} />
+                <Route path="/songs/:id" component={OneSong} />
 
-                <Route path='/songs'>
+                <Route path="/songs">
                   <Songs />
                 </Route>
 
-                <Route path='/genre/:id' component={OneGenre} />
+                <Route path="/genre/:id" component={OneGenre} />
 
                 <Route
                   exact
-                  path='/login'
+                  path="/login"
                   component={props => (
                     <Login {...props} handleJWTChange={this.handleJWTChange} />
                   )}
                 />
 
-                <Route exact path='/genres'>
+                <Route exact path="/genres">
                   <Genres />
                 </Route>
 
+                <Route exact path="/graphql">
+                  <GraphQL />
+                </Route>
+
                 <Route
-                  path='/admin/song/:id'
+                  path="/admin/song/:id"
                   component={props => (
                     <EditSong {...props} jwt={this.state.jwt} />
                   )}
                 />
 
                 <Route
-                  path='/admin'
+                  path="/admin"
                   component={props => <Admin {...props} jwt={this.state.jwt} />}
                 />
-                <Route path='/'>
+                <Route path="/">
                   <Home />
                 </Route>
               </Switch>
