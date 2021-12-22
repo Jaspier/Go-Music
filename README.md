@@ -1,4 +1,5 @@
 Making this project to learn to use GraphQL and frontend frameworks with Go.
+
 You can find the backend Go API for this project [here](https://github.com/Jaspier/Go-Music-Backend)
 
 # Getting Started with Create React App
