@@ -57,7 +57,7 @@ export default class Login extends Component {
       body: JSON.stringify(payload),
     };
 
-    fetch('http://localhost:4000/v1/signin', requestOptions)
+    fetch(`${process.env.REACT_APP_API_URL}/v1/signin`, requestOptions)
       .then(response => response.json())
       .then(data => {
         if (data.error) {
@@ -99,7 +99,7 @@ export default class Login extends Component {
           alertMessage={this.state.alert.message}
         />
 
-        <form className='pt-3' onSubmit={this.handleSubmit}>
+        <form className="pt-3" onSubmit={this.handleSubmit}>
           <Input
             title={'Email'}
             type={'email'}
@@ -122,7 +122,7 @@ export default class Login extends Component {
 
           <hr />
 
-          <button className='btn btn-primary'>Login</button>
+          <button className="btn btn-primary">Login</button>
         </form>
       </Fragment>
     );

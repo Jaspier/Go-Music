@@ -10,7 +10,9 @@ export default class OneGenre extends Component {
   };
 
   componentDidMount() {
-    fetch('http://localhost:4000/v1/songs/' + this.props.match.params.id)
+    fetch(
+      `${process.env.REACT_APP_API_URL}/v1/songs/` + this.props.match.params.id
+    )
       .then(response => {
         if (response.status !== '200') {
           let err = Error;
@@ -59,11 +61,11 @@ export default class OneGenre extends Component {
         <Fragment>
           <h2>Genre: {genreName}</h2>
 
-          <div className='list-group'>
+          <div className="list-group">
             {songs.map(m => (
               <Link
                 to={`/songs/${m.id}`}
-                className='list-group-item list-group-item-action'
+                className="list-group-item list-group-item-action"
               >
                 {m.title}
               </Link>

@@ -9,7 +9,7 @@ export default class Genres extends Component {
   };
 
   componentDidMount() {
-    fetch('http://localhost:4000/v1/genres')
+    fetch(`${process.env.REACT_APP_API_URL}/v1/genres`)
       .then(response => {
         if (response.status !== '200') {
           let err = Error;
@@ -45,11 +45,11 @@ export default class Genres extends Component {
         <Fragment>
           <h2>Genres</h2>
 
-          <div className='list-group'>
+          <div className="list-group">
             {genres.map(m => (
               <Link
                 key={m.id}
-                className='list-group-item list-group-item-action'
+                className="list-group-item list-group-item-action"
                 to={{ pathname: `/genre/${m.id}`, genreName: m.genre_name }}
               >
                 {m.genre_name}

@@ -15,7 +15,7 @@ export default class Admin extends Component {
       });
       return;
     }
-    fetch('http://localhost:4000/v1/songs')
+    fetch(`${process.env.REACT_APP_API_URL}/v1/songs`)
       .then(response => {
         if (response.status !== '200') {
           let err = Error;
@@ -51,11 +51,11 @@ export default class Admin extends Component {
         <Fragment>
           <h2>Manage Collection</h2>
 
-          <div className='list-group'>
+          <div className="list-group">
             {songs.map(m => (
               <Link
                 key={m.id}
-                className='list-group-item list-group-item-action'
+                className="list-group-item list-group-item-action"
                 to={`admin/song/${m.id}`}
               >
                 {m.title} - {m.artist}

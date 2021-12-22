@@ -71,7 +71,7 @@ export default class EditSong extends Component {
       headers: myHeaders,
     };
 
-    fetch('http://localhost:4000/v1/admin/editsong', requestOptions)
+    fetch(`${process.env.REACT_APP_API_URL}/v1/admin/editsong`, requestOptions)
       .then(response => response.json())
       .then(data => {
         if (data.error) {
@@ -110,7 +110,7 @@ export default class EditSong extends Component {
     }
     const id = this.props.match.params.id;
     if (id > 0) {
-      fetch('http://localhost:4000/v1/song/' + id)
+      fetch(`${process.env.REACT_APP_API_URL}/v1/song/` + id)
         .then(response => {
           if (response.status !== '200') {
             let err = Error;
@@ -165,7 +165,8 @@ export default class EditSong extends Component {
             myHeaders.append('Authorization', 'Bearer ' + this.props.jwt);
 
             fetch(
-              'http://localhost:4000/v1/admin/deletesong/' + this.state.song.id,
+              `${process.env.REACT_APP_API_URL}/v1/admin/deletesong/` +
+                this.state.song.id,
               { method: 'GET' }
             )
               .then(response => response.json)
